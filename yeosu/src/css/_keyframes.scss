@@ -1,0 +1,28 @@
+@keyframes wave-1 {
+  0% {
+    transform: rotate3d(0, 0, 1, 20deg);
+  }
+
+  50% {
+    transform: rotate3d(0, 0, 1, 200deg);
+  }
+
+  100% {
+    transform: rotate3d(0, 0, 1, 380deg);
+  }
+}
+
+@keyframes wave-2 {
+  0% {
+    transform: rotate3d(0, 0, 1, 180deg);
+  }
+
+  50% {
+    transform: rotate3d(0, 0, 1, 0deg);
+    right: 70%;
+  }
+
+  100% {
+    transform: rotate3d(0, 0, 1, -180deg);
+  }
+}

@@ -1,0 +1,20 @@
+@import 'reset';
+@import 'fullcalender';
+@import 'logo';
+@import 'keyframes';
+
+.q-drawer {
+  &::after {
+    content: '';
+    width: 34px;
+    height: 96px;
+    background-image: url(../assets/ham-handle.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: -34px;
+    top: 120px;
+    z-index: 1;
+  }
+}

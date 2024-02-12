@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reservation">
+	
+	<select id="getReservationList" parameterType="com.ship.spring.dto.ReservationDTO" resultType="com.ship.spring.dto.ReservationDTO">
+	    select 
+			tm_no,
+			tm_dt,
+			tm_cd,
+			(select (SELECT dt_cd_nm from dt_cd where mst_cd = 'TM01' and dt_cd = b.tm_cd) from time_info as b where tm_no = a.tm_no) as tm_nm,
+			st_cd,
+			(select (SELECT dt_cd_nm from dt_cd where mst_cd = 'ST01' and dt_cd = b.st_cd) from time_info as b where tm_no = a.tm_no) as st_nm,
+			(select count(rsv_no) from reservation_info as c where c.tm_no = a.tm_no) as rsv_num,
+			al_num, 
+			pr_cd,
+			(select (SELECT dt_cd_nm from dt_cd where mst_cd = 'PR01' and dt_cd = b.pr_cd) from time_info as b where tm_no = a.tm_no) as pr_nm 
+		from 
+			time_info as a
+		where
+			tm_dt like '%' || #{yearMonth} || '%'
+		order by 
+			tm_no
+	</select>
+	
+</mapper>

@@ -1,0 +1,16 @@
+export const moneyOptionConfig = {
+  masked: false,
+  prefix: '',
+  suffix: '원',
+  thousands: ',',
+  decimal: '.',
+  precision: 0,
+  disableNegative: false,
+  disabled: false,
+  min: 0,
+  max: 100000000,
+  allowBlank: false,
+  minimumNumberOfCharacters: 0,
+  shouldRound: true,
+  focusOnRight: false,
+};
