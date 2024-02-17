@@ -5,23 +5,68 @@
 <mapper namespace="reservation">
 	
 	<select id="getReservationList" parameterType="com.ship.spring.dto.ReservationDTO" resultType="com.ship.spring.dto.ReservationDTO">
-	    select 
-			tm_no,
-			tm_dt,
-			tm_cd,
-			(select (SELECT dt_cd_nm from dt_cd where mst_cd = 'TM01' and dt_cd = b.tm_cd) from time_info as b where tm_no = a.tm_no) as tm_nm,
-			st_cd,
-			(select (SELECT dt_cd_nm from dt_cd where mst_cd = 'ST01' and dt_cd = b.st_cd) from time_info as b where tm_no = a.tm_no) as st_nm,
-			(select count(rsv_no) from reservation_info as c where c.tm_no = a.tm_no) as rsv_num,
-			al_num, 
-			pr_cd,
-			(select (SELECT dt_cd_nm from dt_cd where mst_cd = 'PR01' and dt_cd = b.pr_cd) from time_info as b where tm_no = a.tm_no) as pr_nm 
-		from 
-			time_info as a
-		where
-			tm_dt like '%' || #{yearMonth} || '%'
+	    select
+			c.tm_no,
+			c.tm_dt,
+			c.tm_cd,
+			d.dt_cd_nm as tm_nm,
+			c.st_cd,
+			f.dt_cd_nm as st_nm,
+			c.rsv_num,
+			c.al_num,
+			c.pr_cd,
+			e.dt_cd_nm as pr_nm
+		from
+			(
+			select 
+			   a.tm_no, 
+			   a.tm_dt,
+			   a.tm_cd,
+			   case 
+			       when b.rsv_num = al_num::bigint 
+			          then '03' 
+			        else a.st_cd
+			   end 
+			       st_cd,
+			   coalesce(b.rsv_num, 0) as rsv_num, 
+			   a.al_num,
+			   a.pr_cd
+			from 
+			   time_info a 
+			left join 
+			(
+			select 
+			   tm_no, 
+			   count(rsv_no) as rsv_num 
+			from 
+				reservation_info 
+			group by 
+				tm_no
+			) b 
+			on 
+				a.tm_no = b.tm_no
+			) c
+		join
+		(
+		select 
+			mst_cd, dt_cd, dt_cd_nm from dt_cd where mst_cd = 'TM01'
+		) as d
+		on 
+			c.tm_cd = d.dt_cd
+		join 
+		(
+		select mst_cd, dt_cd, dt_cd_nm from dt_cd where mst_cd = 'PR01'
+		) as e
+		on 
+			c.pr_cd = e.dt_cd
+		join 
+		(
+		select mst_cd, dt_cd, dt_cd_nm from dt_cd where mst_cd = 'ST01'
+		) as f
+		on 
+			c.st_cd = f.dt_cd
 		order by 
-			tm_no
+			c.tm_dt, c.tm_cd
 	</select>
 	
 </mapper>
