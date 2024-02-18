@@ -1,5 +1,6 @@
 package com.ship.spring.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,10 @@ public class ReservationController {
 	@RequestMapping("/getReservationList")
 	public List getReservationList(@RequestBody ReservationDTO reservationDTO) {
 		return reservationService.getReservationList(reservationDTO);
+	}
+	
+	@RequestMapping("/book")
+	public int book(@RequestBody List<ReservationDTO> reservationDTOList) {
+		return reservationService.book(reservationDTOList);
 	}
 }

@@ -19,4 +19,11 @@ public class ReservationDTO {
 	private String al_num;
 	private String pr_cd;
 	private String pr_nm;
+	private String custNm;
+	private String custSSNF;
+	private String custSSNB;
+	private String custPhone;
+	private String roadAddr;
+	private String dtlAddr;
+	private String isSameAddrWithOwner;
 }

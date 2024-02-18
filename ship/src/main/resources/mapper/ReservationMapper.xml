@@ -69,4 +69,8 @@
 			c.tm_dt, c.tm_cd
 	</select>
 	
+	<insert id="book" parameterType="com.ship.spring.dto.ReservationDTO">
+		
+	</insert>
+	
 </mapper>
