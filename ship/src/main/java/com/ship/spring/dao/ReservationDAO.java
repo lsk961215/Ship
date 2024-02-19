@@ -18,7 +18,12 @@ public class ReservationDAO {
 		return sqlSession.selectList("reservation.getReservationList", reservationDTO);
 	}
 	
-	public void book(ReservationDTO reservationDTO) {
-		sqlSession.insert("reservation.book", reservationDTO);
+	public List<ReservationDTO> regUser(List<ReservationDTO> reservationDTOList) {
+		sqlSession.insert("reservation.regUser", reservationDTOList);
+		return reservationDTOList;
+	}
+	
+	public void book(List<ReservationDTO> reservationDTOList) {
+		sqlSession.insert("reservation.book", reservationDTOList);
 	}
 }

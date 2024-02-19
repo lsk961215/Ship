@@ -1,5 +1,7 @@
 package com.ship.spring.dto;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,6 +15,7 @@ public class ReservationDTO {
 	private String tm_dt;
 	private String tm_cd;
 	private String tm_nm;
+	private String way;
 	private String st_cd;
 	private String st_nm;
 	private String rsv_num;
@@ -25,5 +28,5 @@ public class ReservationDTO {
 	private String custPhone;
 	private String roadAddr;
 	private String dtlAddr;
-	private String isSameAddrWithOwner;
+	private List usrNoList;
 }

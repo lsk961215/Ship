@@ -19,14 +19,9 @@ public class ReservationService {
 	}
 	
 	public int book(List<ReservationDTO> reservationDTOList) {
-		try {
-			for(int i = 0; i<reservationDTOList.size(); i++) {
-				reservationDAO.book(reservationDTOList.get(i));
-			}
-			return 1;
-		} catch (Exception e) {
-			return 0;
-		}
+		List usrNoList = reservationDAO.regUser(reservationDTOList);
+		reservationDAO.book(usrNoList);
+		return 0;
 	}
 	
 }

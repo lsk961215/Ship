@@ -5,72 +5,112 @@
 <mapper namespace="reservation">
 	
 	<select id="getReservationList" parameterType="com.ship.spring.dto.ReservationDTO" resultType="com.ship.spring.dto.ReservationDTO">
-	    select
+	    SELECT
 			c.tm_no,
 			c.tm_dt,
 			c.tm_cd,
-			d.dt_cd_nm as tm_nm,
+			d.dt_cd_nm AS tm_nm,
+			CASE 
+				WHEN c.tm_cd::NUMERIC%2 = 1
+			    	THEN '낭도->추도' 
+			    ELSE '추도->낭도'
+			END 
+				way,
 			c.st_cd,
-			f.dt_cd_nm as st_nm,
+			f.dt_cd_nm AS st_nm,
 			c.rsv_num,
 			c.al_num,
 			c.pr_cd,
-			e.dt_cd_nm as pr_nm
-		from
+			e.dt_cd_nm AS pr_nm
+		FROM
 			(
-			select 
-			   a.tm_no, 
-			   a.tm_dt,
-			   a.tm_cd,
-			   case 
-			       when b.rsv_num = al_num::bigint 
-			          then '03' 
-			        else a.st_cd
-			   end 
+			SELECT
+			   	a.tm_no, 
+			   	a.tm_dt,
+			   	a.tm_cd,
+			   	CASE 
+			       	WHEN b.rsv_num = al_num::bigint 
+					THEN '03' 
+			       	ELSE a.st_cd
+			   END 
 			       st_cd,
-			   coalesce(b.rsv_num, 0) as rsv_num, 
+			   COALESCE(b.rsv_num, 0) AS rsv_num, 
 			   a.al_num,
 			   a.pr_cd
-			from 
+			FROM
 			   time_info a 
-			left join 
+			LEFT JOIN 
 			(
-			select 
+			SELECT
 			   tm_no, 
-			   count(rsv_no) as rsv_num 
-			from 
+			   COUNT(rsv_no) AS rsv_num 
+			FROM 
 				reservation_info 
-			group by 
+			GROUP BY 
 				tm_no
 			) b 
-			on 
+			ON 
 				a.tm_no = b.tm_no
 			) c
-		join
+		JOIN
 		(
-		select 
-			mst_cd, dt_cd, dt_cd_nm from dt_cd where mst_cd = 'TM01'
-		) as d
-		on 
+		SELECT
+			mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'TM01'
+		) AS d
+		ON 
 			c.tm_cd = d.dt_cd
-		join 
+		JOIN
 		(
-		select mst_cd, dt_cd, dt_cd_nm from dt_cd where mst_cd = 'PR01'
-		) as e
-		on 
+		SELECT mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'PR01'
+		) AS e
+		ON 
 			c.pr_cd = e.dt_cd
-		join 
+		JOIN 
 		(
-		select mst_cd, dt_cd, dt_cd_nm from dt_cd where mst_cd = 'ST01'
-		) as f
-		on 
+		SELECT mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'ST01'
+		) AS f
+		ON
 			c.st_cd = f.dt_cd
-		order by 
+		ORDER BY 
 			c.tm_dt, c.tm_cd
 	</select>
+	
+	<insert id="regUser" parameterType="com.ship.spring.dto.ReservationDTO">
+		BEGIN
+			<foreach collection="list" item="item">
+				MERGE INTO user_info AS u
+					USING dual ON
+					(
+						u.usr_nm = #{custNm}
+						u.usr_ju = #{custSSNF}||#{custSSNB}
+					)
+					WHEN MATCHED THEN
+			</foreach>
+		END
+		
+		insert into
+			user_info
+			(
+			usr_no, 
+			usr_nm, 
+			usr_zip, 
+			usr_ad, 
+			usr_ad_dt, 
+			usr_pn, 
+			usr_ju, 
+			usr_dt
+			)
+		values
+			(
+			
+					
+			
+	</insert>
 	
 	<insert id="book" parameterType="com.ship.spring.dto.ReservationDTO">
 		
 	</insert>
+	
+	
 	
 </mapper>
