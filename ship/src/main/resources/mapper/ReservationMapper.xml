@@ -8,42 +8,42 @@
 	    SELECT
 			c.tm_no,
 			c.tm_dt,
-			c.tm_cd,
-			d.dt_cd_nm AS tm_nm,
-			CASE 
-				WHEN c.tm_cd::NUMERIC%2 = 1
-			    	THEN '낭도->추도' 
-			    ELSE '추도->낭도'
-			END 
-				way,
+			c.hhmm,
+			c.wy_cd,
+			d.dt_cd_nm as wy_nm,
 			c.st_cd,
 			f.dt_cd_nm AS st_nm,
 			c.rsv_num,
-			c.al_num,
-			c.pr_cd,
-			e.dt_cd_nm AS pr_nm
+			c.al_rsv_num,
+			c.wa_num,
+			c.al_wa_num,
+			c.price
 		FROM
 			(
 			SELECT
 			   	a.tm_no, 
 			   	a.tm_dt,
-			   	a.tm_cd,
-			   	CASE 
-			       	WHEN b.rsv_num = al_num::bigint 
+			   	a.hhmm,
+			   	a.wy_cd,
+				CASE 
+			       	WHEN b.rsv_num = al_rsv_num::bigint 
 					THEN '03' 
 			       	ELSE a.st_cd
-			   END 
-			       st_cd,
-			   COALESCE(b.rsv_num, 0) AS rsv_num, 
-			   a.al_num,
-			   a.pr_cd
+			  	END 
+			    	st_cd,
+			   	COALESCE(b.rsv_num, 0) AS rsv_num, 
+			   	a.al_rsv_num,
+			   	COALESCE(b.wa_num, 0) AS wa_num,
+			   	a.al_wa_num,
+			   	a.price
 			FROM
 			   time_info a 
 			LEFT JOIN 
 			(
 			SELECT
 			   tm_no, 
-			   COUNT(rsv_no) AS rsv_num 
+			   COUNT(case when rv_cd = '01' then 1 end) AS rsv_num,
+			   COUNT(case when rv_cd = '02' then 1 end) AS wa_num
 			FROM 
 				reservation_info 
 			GROUP BY 
@@ -52,19 +52,12 @@
 			ON 
 				a.tm_no = b.tm_no
 			) c
-		JOIN
+		JOIN 
 		(
-		SELECT
-			mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'TM01'
+		SELECT mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'WY01'
 		) AS d
-		ON 
-			c.tm_cd = d.dt_cd
-		JOIN
-		(
-		SELECT mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'PR01'
-		) AS e
-		ON 
-			c.pr_cd = e.dt_cd
+		ON
+			c.wy_cd = d.dt_cd
 		JOIN 
 		(
 		SELECT mst_cd, dt_cd, dt_cd_nm FROM dt_cd WHERE mst_cd = 'ST01'
@@ -72,39 +65,24 @@
 		ON
 			c.st_cd = f.dt_cd
 		ORDER BY 
-			c.tm_dt, c.tm_cd
+			c.tm_dt, c.hhmm
 	</select>
 	
 	<insert id="regUser" parameterType="com.ship.spring.dto.ReservationDTO">
-		BEGIN
-			<foreach collection="list" item="item">
-				MERGE INTO user_info AS u
-					USING dual ON
-					(
-						u.usr_nm = #{custNm}
-						u.usr_ju = #{custSSNF}||#{custSSNB}
-					)
-					WHEN MATCHED THEN
-			</foreach>
-		END
-		
-		insert into
-			user_info
-			(
-			usr_no, 
-			usr_nm, 
-			usr_zip, 
-			usr_ad, 
-			usr_ad_dt, 
-			usr_pn, 
-			usr_ju, 
-			usr_dt
-			)
-		values
-			(
-			
-					
-			
+		insert into user_info (usr_no, usr_nm, usr_zip, usr_ad, usr_ad_dt, usr_pn, usr_ju, usr_dt)
+		values (
+				nextval('seq_usr_no'),
+				#{custNm},
+				#{postCode},
+				#{roadAddr},
+				#{dtlAddr},
+				#{custPhone},
+				#{custSSNF} || #{custSSNB},
+				to_char(now(), 'YYYY-MM-DD')
+				)
+			on conflict (usr_ju)
+			do update set temp = (select setval('seq_usr_no', currval('seq_usr_no')-1) as TEST)
+		returning usr_no
 	</insert>
 	
 	<insert id="book" parameterType="com.ship.spring.dto.ReservationDTO">

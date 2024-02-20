@@ -1,5 +1,6 @@
 package com.ship.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,12 @@ public class ReservationService {
 	}
 	
 	public int book(List<ReservationDTO> reservationDTOList) {
-		List usrNoList = reservationDAO.regUser(reservationDTOList);
-		reservationDAO.book(usrNoList);
+		List custList = new ArrayList();
+		
+		for(int i = 0; i<reservationDTOList.size(); i++) {
+			int result = reservationDAO.regUser(reservationDTOList.get(i));
+			custList.add(result);
+		}
 		return 0;
 	}
 	
