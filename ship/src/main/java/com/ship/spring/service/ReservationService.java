@@ -1,7 +1,9 @@
 package com.ship.spring.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,17 +17,18 @@ public class ReservationService {
 	@Autowired
 	ReservationDAO reservationDAO;
 	
-	public List getReservationList(ReservationDTO reservationDTO) {
+	public List<ReservationDTO> getReservationList(ReservationDTO reservationDTO) {
 		return reservationDAO.getReservationList(reservationDTO);
 	}
 	
 	public int book(List<ReservationDTO> reservationDTOList) {
-		List custList = new ArrayList();
-		
 		for(int i = 0; i<reservationDTOList.size(); i++) {
-			int result = reservationDAO.regUser(reservationDTOList.get(i));
-			custList.add(result);
+			String usrNo = Integer.toString(reservationDAO.regUser(reservationDTOList.get(i)));
+			reservationDTOList.get(i).setUsr_no(usrNo);
 		}
+		
+		reservationDAO.book(reservationDTOList);
+		
 		return 0;
 	}
 	

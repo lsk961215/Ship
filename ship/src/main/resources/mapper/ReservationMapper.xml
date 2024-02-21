@@ -68,7 +68,8 @@
 			c.tm_dt, c.hhmm
 	</select>
 	
-	<insert id="regUser" parameterType="com.ship.spring.dto.ReservationDTO">
+	<select id="regUser" parameterType="com.ship.spring.dto.ReservationDTO" resultType="int">
+		
 		insert into user_info (usr_no, usr_nm, usr_zip, usr_ad, usr_ad_dt, usr_pn, usr_ju, usr_dt)
 		values (
 				nextval('seq_usr_no'),
@@ -80,15 +81,49 @@
 				#{custSSNF} || #{custSSNB},
 				to_char(now(), 'YYYY-MM-DD')
 				)
-			on conflict (usr_ju)
-			do update set temp = (select setval('seq_usr_no', currval('seq_usr_no')-1) as TEST)
+		on conflict (usr_ju)
+		do update set 
+			temp = (select setval('seq_usr_no', currval('seq_usr_no')-1) as TEST),
+			usr_nm = #{custNm},
+			usr_zip = #{postCode},
+			usr_ad = #{roadAddr},
+			usr_ad_dt = #{dtlAddr},
+			usr_pn = #{custPhone},
+			usr_dt = to_char(now(), 'YYYY-MM-DD')
 		returning usr_no
+	</select>
+	
+	<insert id="book" parameterType="java.util.List">
+		<!--insert into 
+			reservation_info
+			(
+				rsv_no,
+				usr_no,
+				tm_no,
+				us_cd,
+				rv_cd
+			)
+		values
+			<foreach collection="list" item="item" index="index">
+				<if test="index == 0">
+					(
+					 	nextval('seq_rsv_no'),
+					 	#{item.usr_no},
+					 	#{item.tm_no},
+					 	#{item.us_cd},
+					 	#{item.rv_cd}
+					)
+				</if>
+				<if test="index != 0">
+					(
+					 	currval('seq_rsv_no'),
+					 	#{item.usr_no},
+					 	#{item.tm_no},
+					 	#{item.us_cd},
+					 	#{item.rv_cd}
+					)
+				</if>
+			</foreach>-->
 	</insert>
-	
-	<insert id="book" parameterType="com.ship.spring.dto.ReservationDTO">
-		
-	</insert>
-	
-	
 	
 </mapper>

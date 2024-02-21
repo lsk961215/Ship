@@ -1,6 +1,7 @@
 package com.ship.spring.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,11 @@ public class ReservationDAO {
 	}
 	
 	public int regUser(ReservationDTO reservationDTO) {
-		int result = sqlSession.insert("reservation.regUser", reservationDTO);
-		return result;
+		int usrNo = sqlSession.selectOne("reservation.regUser", reservationDTO);
+		return usrNo;
 	}
 	
-	public void book(List<ReservationDTO> reservationDTOList) {
-		sqlSession.insert("reservation.book", reservationDTOList);
+	public int book(List<ReservationDTO> reservationDTOList) {
+		return sqlSession.insert("reservation.book", reservationDTOList);
 	}
 }
