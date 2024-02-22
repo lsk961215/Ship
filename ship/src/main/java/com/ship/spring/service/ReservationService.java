@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ship.spring.dao.ReservationDAO;
+import com.ship.spring.dto.BoardDTO;
 import com.ship.spring.dto.ReservationDTO;
 
 @Service
@@ -32,4 +33,7 @@ public class ReservationService {
 		return 0;
 	}
 	
+	public List<ReservationDTO> getNoticeList(BoardDTO boardDTO) {
+		return reservationDAO.getNoticeList(boardDTO);
+	}
 }

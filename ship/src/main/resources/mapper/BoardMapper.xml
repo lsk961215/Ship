@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	
+	<select id="getBoardList" parameterType="com.ship.spring.dto.BoardDTO" resultType="com.ship.spring.dto.BoardDTO">
+	    SELECT
+	    	a.*
+	    FROM
+	    	(
+		    SELECT
+		    	(ROW_NUMBER() OVER()) AS ROWNUM,
+		    	bo_no, 
+		    	bo_ti, 
+		    	bo_dt, 
+		    	bo_cd, 
+		    	bo_pw, 
+		    	pr_no, 
+		    	bo_prv, 
+		    	bo_desc
+		    FROM
+		    	board_info
+		    WHERE
+		    	bo_cd = #{bo_cd}
+	   		) a
+	   	WHERE 
+	   		a.rownum >= #{perPage} #{currPage}
+	   		
+	</select>
+</mapper>
