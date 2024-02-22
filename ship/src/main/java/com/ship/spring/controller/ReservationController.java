@@ -26,4 +26,9 @@ public class ReservationController {
 	public int book(@RequestBody List<ReservationDTO> reservationDTOList) {
 		return reservationService.book(reservationDTOList);
 	}
+	
+//	@RequestMapping("/getNoticeList")
+//	public List getNoticeList(@RequestBody ReservationDTO reservationDTO) {
+//		return reservationService.getNoticeList(reservationDTO);
+//	}
 }

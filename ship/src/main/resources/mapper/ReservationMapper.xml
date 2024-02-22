@@ -70,7 +70,7 @@
 	
 	<select id="regUser" parameterType="com.ship.spring.dto.ReservationDTO" resultType="int">
 		
-		insert into user_info (usr_no, usr_nm, usr_zip, usr_ad, usr_ad_dt, usr_pn, usr_ju, usr_dt)
+		insert into user_info (usr_no, usr_nm, usr_zip, usr_ad, usr_ad_dt, usr_pn, usr_ju)
 		values (
 				nextval('seq_usr_no'),
 				#{custNm},
@@ -78,8 +78,7 @@
 				#{roadAddr},
 				#{dtlAddr},
 				#{custPhone},
-				#{custSSNF} || #{custSSNB},
-				to_char(now(), 'YYYY-MM-DD')
+				#{custSSNF} || #{custSSNB}
 				)
 		on conflict (usr_ju)
 		do update set 
@@ -88,8 +87,7 @@
 			usr_zip = #{postCode},
 			usr_ad = #{roadAddr},
 			usr_ad_dt = #{dtlAddr},
-			usr_pn = #{custPhone},
-			usr_dt = to_char(now(), 'YYYY-MM-DD')
+			usr_pn = #{custPhone}
 		returning usr_no
 	</select>
 	
