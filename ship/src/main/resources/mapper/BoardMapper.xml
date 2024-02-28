@@ -3,29 +3,42 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="board">
+	<resultMap id="boardMap" type="com.ship.spring.dto.BoardDTO">
+		<result column="BO_NO" property="boNo"/>
+		<result column="USR_NO" property="usrNo"/>
+		<result column="BO_TI" property="boTi"/>
+		<result column="BO_DT" property="boDt"/>
+		<result column="BO_CD" property="boCd"/>
+		<result column="BO_PW" property="boPw"/>	  
+		<result column="PR_NO" property="prNo"/>	  
+		<result column="BO_PRV" property="boPrv"/>
+		<result column="BO_CONT" property="boCont"/>
+	</resultMap>
 	
-	<select id="getBoardList" parameterType="com.ship.spring.dto.BoardDTO" resultType="com.ship.spring.dto.BoardDTO">
+	<select id="getBoardList" parameterType="com.ship.spring.dto.BoardDTO" resultMap="boardMap">
 	    SELECT
 	    	a.*
 	    FROM
 	    	(
 		    SELECT
-		    	(ROW_NUMBER() OVER()) AS ROWNUM,
-		    	bo_no, 
+		    	(ROW_NUMBER() OVER(order by bo_dt desc, bo_no desc)) AS rownum,
+		    	bo_no,
+		    	usr_no, 
 		    	bo_ti, 
 		    	bo_dt, 
 		    	bo_cd, 
 		    	bo_pw, 
 		    	pr_no, 
 		    	bo_prv, 
-		    	bo_desc
+		    	bo_cont
 		    FROM
 		    	board_info
 		    WHERE
-		    	bo_cd = #{bo_cd}
+		    	bo_cd = #{boCd}
 	   		) a
 	   	WHERE 
-	   		a.rownum >= #{perPage} #{currPage}
-	   		
+	   		a.rownum
+	   	BETWEEN
+	   		#{minRow}::numeric AND #{maxRow}::numeric
 	</select>
 </mapper>

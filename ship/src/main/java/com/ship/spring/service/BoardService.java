@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ship.spring.Paging;
 import com.ship.spring.dao.BoardDAO;
 import com.ship.spring.dto.BoardDTO;
 
@@ -18,6 +19,12 @@ public class BoardService {
 	BoardDAO boardDAO;
 	
 	public List<BoardDTO> getBoardList(BoardDTO boardDTO) {
+		Paging paging = new Paging(boardDTO.getPerPage(), boardDTO.getCurrPage());
+		paging.setPaging();
+		
+		boardDTO.setMinRow(paging.getMinRow());
+		boardDTO.setMaxRow(paging.getMaxRow());
+		
 		return boardDAO.getBoardList(boardDTO);
 	}
 }

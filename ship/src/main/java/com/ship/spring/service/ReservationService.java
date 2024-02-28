@@ -32,8 +32,4 @@ public class ReservationService {
 		
 		return 0;
 	}
-	
-	public List<ReservationDTO> getNoticeList(BoardDTO boardDTO) {
-		return reservationDAO.getNoticeList(boardDTO);
-	}
 }

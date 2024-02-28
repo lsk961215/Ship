@@ -16,7 +16,7 @@ public class BoardDAO {
 	@Autowired
 	SqlSession sqlSession;
 	
-	public List getBoardList(BoardDTO boardDTO) {
+	public List<BoardDTO> getBoardList(BoardDTO boardDTO) {
 		return sqlSession.selectList("board.getBoardList", boardDTO);
 	}
 }
