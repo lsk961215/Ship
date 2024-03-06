@@ -91,37 +91,41 @@
 		returning usr_no
 	</select>
 	
-	<insert id="book" parameterType="java.util.List">
-		<!--insert into 
+	<select id="book" parameterType="java.util.List" resultType="String">
+		insert into 
 			reservation_info
 			(
 				rsv_no,
 				usr_no,
 				tm_no,
 				us_cd,
-				rv_cd
+				rv_cd,
+				rsv_dt
 			)
 		values
-			<foreach collection="list" item="item" index="index">
+			<foreach collection="list" item="item" index="index" separator=",">
 				<if test="index == 0">
 					(
 					 	nextval('seq_rsv_no'),
-					 	#{item.usr_no},
-					 	#{item.tm_no},
+					 	#{item.usr_no}::numeric,
+					 	#{item.tm_no}::numeric,
 					 	#{item.us_cd},
-					 	#{item.rv_cd}
+					 	#{item.rv_cd},
+					 	to_char(now(),  'YYYY-MM-DD HH24:MI')
 					)
 				</if>
 				<if test="index != 0">
 					(
 					 	currval('seq_rsv_no'),
-					 	#{item.usr_no},
-					 	#{item.tm_no},
+					 	#{item.usr_no}::numeric,
+					 	#{item.tm_no}::numeric,
 					 	#{item.us_cd},
-					 	#{item.rv_cd}
+					 	#{item.rv_cd},
+					 	to_char(now(),  'YYYY-MM-DD HH24:MI')
 					)
 				</if>
-			</foreach>-->
-	</insert>
+			</foreach>
+			returning rsv_dt
+	</select>
 	
 </mapper>
