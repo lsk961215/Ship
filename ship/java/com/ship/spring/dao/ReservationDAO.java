@@ -15,7 +15,7 @@ public class ReservationDAO {
 	@Autowired
 	SqlSession sqlSession;
 	
-	public List getReservationList(ReservationDTO reservationDTO) {
+	public List<ReservationDTO> getReservationList(ReservationDTO reservationDTO) {
 		return sqlSession.selectList("reservation.getReservationList", reservationDTO);
 	}
 	

@@ -35,4 +35,5 @@ public class ReservationDTO {
 	private String dtlAddr;
 	private String usr_no;
 	private String rsvDt;
+	private String message;
 }

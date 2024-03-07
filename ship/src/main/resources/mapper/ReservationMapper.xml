@@ -102,28 +102,28 @@
 				rv_cd,
 				rsv_dt
 			)
-		values
-			<foreach collection="list" item="item" index="index" separator=",">
+			<foreach collection="list" item="item" index="index" separator="UNION ALL">
+				select
 				<if test="index == 0">
-					(
 					 	nextval('seq_rsv_no'),
 					 	#{item.usr_no}::numeric,
 					 	#{item.tm_no}::numeric,
 					 	#{item.us_cd},
 					 	#{item.rv_cd},
 					 	to_char(now(),  'YYYY-MM-DD HH24:MI')
-					)
 				</if>
 				<if test="index != 0">
-					(
 					 	currval('seq_rsv_no'),
 					 	#{item.usr_no}::numeric,
 					 	#{item.tm_no}::numeric,
 					 	#{item.us_cd},
 					 	#{item.rv_cd},
 					 	to_char(now(),  'YYYY-MM-DD HH24:MI')
-					)
 				</if>
+				as 
+					TEST
+				where
+					10 > (select count(tm_no) from reservation_info where tm_no = #{item.tm_no}::numeric)
 			</foreach>
 			returning rsv_dt
 	</select>

@@ -24,7 +24,7 @@ public class ReservationService {
 		return reservationDAO.getReservationList(reservationDTO);
 	}
 	
-	@Transactional(isolation = Isolation.REPEATABLE_READ)
+	@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
 	public ReservationDTO book(List<ReservationDTO> reservationDTOList) {
 		for(int i = 0; i<reservationDTOList.size(); i++) {
 			String usrNo = Integer.toString(reservationDAO.regUser(reservationDTOList.get(i)));

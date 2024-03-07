@@ -24,6 +24,13 @@ public class ReservationController {
 	
 	@RequestMapping("/book")
 	public ReservationDTO book(@RequestBody List<ReservationDTO> reservationDTOList) {
-		return reservationService.book(reservationDTOList);
+		ReservationDTO reservationDTO = new ReservationDTO();
+		try {
+			reservationDTO = reservationService.book(reservationDTOList);
+			return reservationDTO;
+		} catch (IndexOutOfBoundsException e) {
+			reservationDTO.setMessage("예약과정에서 문제가 발생했습니다.");
+			return reservationDTO;
+		}
 	}
 }
