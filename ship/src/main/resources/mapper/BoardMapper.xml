@@ -10,8 +10,7 @@
 		<result column="BO_DT" property="boDt"/>
 		<result column="BO_CD" property="boCd"/>
 		<result column="BO_PW" property="boPw"/>	  
-		<result column="PR_NO" property="prNo"/>	  
-		<result column="BO_PRV" property="boPrv"/>
+		<result column="PR_NO" property="prNo"/>
 		<result column="BO_CONT" property="boCont"/>
 	</resultMap>
 	
@@ -28,13 +27,15 @@
 		    	bo_dt, 
 		    	bo_cd, 
 		    	bo_pw, 
-		    	pr_no, 
-		    	bo_prv, 
+		    	pr_no,
 		    	bo_cont
 		    FROM
 		    	board_info
 		    WHERE
 		    	bo_cd = #{boCd}
+		    <if test="boTi != null">
+				AND bo_ti LIKE '%' || #{boTi} || '%'
+			</if>
 	   		) a
 	   	WHERE 
 	   		a.rownum
