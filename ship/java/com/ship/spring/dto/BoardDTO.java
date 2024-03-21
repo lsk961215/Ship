@@ -11,7 +11,7 @@ public class BoardDTO {
 	private String perPage;
 	private String currPage;
 	private String boNo;
-	private String usrNo;
+	private String usrNm;
 	private String boTi;
 	private String boDt;
 	private String boCd;

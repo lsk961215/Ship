@@ -21,4 +21,14 @@ public class BoardController {
 	public List getBoardList(@RequestBody BoardDTO boardDTO) {
 		return boardService.getBoardList(boardDTO);
 	}
+	
+	@RequestMapping("/getBoardDetail")
+	public BoardDTO getBoardDetail(@RequestBody BoardDTO boardDTO) {
+		return boardService.getBoardDetail(boardDTO);
+	}
+	
+	@RequestMapping("/regQnA")
+	public BoardDTO regQnA(@RequestBody BoardDTO boardDTO) {
+//		return boardService.getBoardDetail(boardDTO);
+	}
 }

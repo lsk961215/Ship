@@ -17,7 +17,10 @@ public class BoardDAO {
 	SqlSession sqlSession;
 	
 	public List<BoardDTO> getBoardList(BoardDTO boardDTO) {
-		List resultList = sqlSession.selectList("board.getBoardList", boardDTO);
-		return resultList;
+		return sqlSession.selectList("board.getBoardList", boardDTO);
+	}
+	
+	public BoardDTO getBoardDetail(BoardDTO boardDTO) {
+		return sqlSession.selectOne("board.getBoardDetail", boardDTO);
 	}
 }

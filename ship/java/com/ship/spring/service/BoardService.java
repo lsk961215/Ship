@@ -27,4 +27,8 @@ public class BoardService {
 		
 		return boardDAO.getBoardList(boardDTO);
 	}
+	
+	public BoardDTO getBoardDetail(BoardDTO boardDTO) {
+		return boardDAO.getBoardDetail(boardDTO);
+	}
 }
