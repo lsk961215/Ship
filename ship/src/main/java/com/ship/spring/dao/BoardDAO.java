@@ -19,4 +19,12 @@ public class BoardDAO {
 	public List<BoardDTO> getBoardList(BoardDTO boardDTO) {
 		return sqlSession.selectList("board.getBoardList", boardDTO);
 	}
+	
+	public BoardDTO getBoardDetail(BoardDTO boardDTO) {
+		return sqlSession.selectOne("board.getBoardDetail", boardDTO);
+	}
+	
+	public int regBoard(BoardDTO boardDTO) {
+		return sqlSession.insert("board.regBoard", boardDTO);
+	}
 }

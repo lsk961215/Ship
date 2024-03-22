@@ -27,4 +27,20 @@ public class BoardService {
 		
 		return boardDAO.getBoardList(boardDTO);
 	}
+	
+	public BoardDTO getBoardDetail(BoardDTO boardDTO) {
+		return boardDAO.getBoardDetail(boardDTO);
+	}
+	
+	public BoardDTO regBoard(BoardDTO boardDTO) {
+		int result = boardDAO.regBoard(boardDTO);
+		if(result == 1) {
+			boardDTO.setMessage("등록되었습니다.");
+			boardDTO.setState("1");
+		} else {
+			boardDTO.setMessage("등록에 실패하였습니다.");
+			boardDTO.setState("0");
+		}
+		return boardDTO;
+	}
 }
