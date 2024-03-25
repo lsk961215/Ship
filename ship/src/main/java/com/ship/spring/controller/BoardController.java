@@ -32,4 +32,10 @@ public class BoardController {
 	public BoardDTO regBoard(@RequestBody BoardDTO boardDTO) {
 		return boardService.regBoard(boardDTO);
 	}
+	
+	@PostMapping("/checkPwd")
+	public BoardDTO checkPwd(@RequestBody BoardDTO boardDTO) {
+		boardDTO = boardService.checkPwd(boardDTO);
+		return boardDTO;
+	}
 }

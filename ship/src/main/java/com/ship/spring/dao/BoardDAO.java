@@ -27,4 +27,8 @@ public class BoardDAO {
 	public int regBoard(BoardDTO boardDTO) {
 		return sqlSession.insert("board.regBoard", boardDTO);
 	}
+	
+	public BoardDTO checkPwd(BoardDTO boardDTO) {
+		return sqlSession.selectOne("board.checkPwd", boardDTO);
+	}
 }

@@ -12,6 +12,9 @@
 		<result column="BO_PW" property="boPw"/>	  
 		<result column="PR_NO" property="prNo"/>
 		<result column="BO_CONT" property="boCont"/>
+		<result column="BO_RE_CONT" property="boReCont"/>
+		<result column="BO_PRV" property="boPrv"/>
+		<result column="REPLYSTATE" property="replyState"/>
 	</resultMap>
 	
 	<select id="getBoardList" parameterType="com.ship.spring.dto.BoardDTO" resultMap="boardMap">
@@ -24,19 +27,37 @@
 		    	bo_no,
 		    	bo_ti, 
 		    	bo_dt, 
-		    	bo_cd, 
-		    	bo_pw, 
-		    	bo_cont,
+		    	bo_cd,
+		    	CASE 
+			       	WHEN bo_prv = true
+					THEN null
+			       	ELSE bo_cont
+			  	END 
+			    	bo_cont,
 		    	usr_nm, 
 		    	bo_prv,
-		    	bo_re_cont
+		    	CASE 
+			       	WHEN bo_prv = true
+					THEN null
+			       	ELSE bo_re_cont
+			  	END 
+			  		bo_re_cont,
+			  	CASE
+			  		WHEN bo_re_cont is not null
+			  		THEN true
+			  		ELSE false
+			  	END
+			  		replystate
 		    FROM
 		    	board_info
 		    WHERE
 		    	bo_cd = #{boCd}
 		    <if test="boTi != null">
-				AND bo_ti LIKE '%' || #{boTi} || '%'
+			AND 
+				bo_ti LIKE '%' || #{boTi} || '%'
 			</if>
+			ORDER BY
+				bo_dt DESC	
 	   		) a
 	   	WHERE 
 	   		a.rownum
@@ -113,4 +134,18 @@
 			)
 		</if>
 	</insert>
+	
+	<select id="checkPwd" parameterType="com.ship.spring.dto.BoardDTO" resultMap="boardMap">
+	    SELECT
+			bo_no, 
+		    bo_pw,
+		    bo_cont,
+		    bo_re_cont
+		FROM
+			board_info
+		WHERE 
+			bo_no = #{boNo}::numeric
+		AND
+			bo_pw = #{boPw}
+	</select>
 </mapper>

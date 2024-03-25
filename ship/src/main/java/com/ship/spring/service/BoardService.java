@@ -43,4 +43,8 @@ public class BoardService {
 		}
 		return boardDTO;
 	}
+	
+	public BoardDTO checkPwd(BoardDTO boardDTO) {
+		return boardDAO.checkPwd(boardDTO);
+	}
 }

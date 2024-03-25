@@ -69,7 +69,6 @@
 	</select>
 	
 	<select id="regUser" parameterType="com.ship.spring.dto.ReservationDTO" resultType="int">
-		
 		insert into user_info (usr_no, usr_nm, usr_zip, usr_ad, usr_ad_dt, usr_pn, usr_ju)
 		values (
 				nextval('seq_usr_no'),
