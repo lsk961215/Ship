@@ -47,4 +47,16 @@ public class BoardService {
 	public BoardDTO checkPwd(BoardDTO boardDTO) {
 		return boardDAO.checkPwd(boardDTO);
 	}
+	
+	public BoardDTO deleteBoard(BoardDTO boardDTO) {
+		int result = boardDAO.deleteBoard(boardDTO);
+		if(result == 1) {
+			boardDTO.setMessage("삭제되었습니다.");
+			boardDTO.setState("1");
+		} else {
+			boardDTO.setMessage("삭제에 실패하였습니다.");
+			boardDTO.setState("0");
+		}
+		return boardDTO;
+	}
 }

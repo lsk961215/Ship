@@ -31,4 +31,8 @@ public class BoardDAO {
 	public BoardDTO checkPwd(BoardDTO boardDTO) {
 		return sqlSession.selectOne("board.checkPwd", boardDTO);
 	}
+	
+	public int deleteBoard(BoardDTO boardDTO) {
+		return sqlSession.delete("board.deleteBoard", boardDTO);
+	}
 }
