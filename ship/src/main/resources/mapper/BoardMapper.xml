@@ -150,7 +150,7 @@
 	</select>
 	
 	<delete id="deleteBoard" parameterType="com.ship.spring.dto.BoardDTO">
-		<!--<if test="boardList.length != 1">
+		<if test="boardList[0].boPw == null">
 		DELETE FROM
 		    board_info
 		WHERE
@@ -159,13 +159,13 @@
 			#{item.boNo}
 		</foreach>
 		</if>
-		<if test="boardList.length == 1">
+		<if test="boardList.size() == 1 and boardList[0].boPw != null">
 		DELETE FROM
 			board_info
 		WHERE
-			bo_no = #{boardList[i].boNo}
+			bo_no = #{boardList[0].boNo}::numeric
 		AND
-			bo_pw = #{boardList[i].boPwd}
-		</if>-->
+			bo_pw = #{boardList[0].boPw}
+		</if>
 	</delete>
 </mapper>
