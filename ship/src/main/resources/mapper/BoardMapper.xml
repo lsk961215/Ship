@@ -56,6 +56,27 @@
 			AND 
 				bo_ti LIKE '%' || #{boTi} || '%'
 			</if>
+			<if test="usrNm != null">
+			AND 
+				usr_nm LIKE '%' || #{usrNm} || '%'
+			</if>
+			<if test="replyState != null">
+			AND 
+				<if test="replyState == '01'">
+				bo_re_cont is null
+				</if>
+				<if test="replyState == '02'">
+				bo_re_cont is not null
+				</if>
+			</if>
+			<if test="fromDate != null">
+			AND 
+				bo_dt <![CDATA[ >= ]]> #{fromDate}
+			</if>
+			<if test="toDate != null">
+			AND 
+				bo_dt <![CDATA[ <= ]]> #{toDate}
+			</if>
 			ORDER BY
 				bo_dt DESC	
 	   		) a

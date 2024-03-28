@@ -26,7 +26,7 @@ public class BoardDTO {
 	private String maxRow;
 	private String message;
 	private String state; // 등록상태
-	private boolean replyState; // DB 컬럼(x)
+	private String replyState; // DB 컬럼(x)
 	private String fromDate;
 	private String toDate;
 }
