@@ -25,6 +25,7 @@ public class ReservationDTO {
 	private String price;
 	private String us_cd;
 	private String rv_cd;
+	private String custCnt;
 	private String custNm;
 	private String custSSNF;
 	private String custSSNB;
@@ -33,4 +34,6 @@ public class ReservationDTO {
 	private String roadAddr;
 	private String dtlAddr;
 	private String usr_no;
+	private String rsvDt;
+	private String message;
 }

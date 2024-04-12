@@ -15,16 +15,18 @@ public class ReservationDAO {
 	@Autowired
 	SqlSession sqlSession;
 	
-	public List getReservationList(ReservationDTO reservationDTO) {
+	public List<ReservationDTO> getReservationList(ReservationDTO reservationDTO) {
 		return sqlSession.selectList("reservation.getReservationList", reservationDTO);
 	}
+
 	
 	public int regUser(ReservationDTO reservationDTO) {
 		int usrNo = sqlSession.selectOne("reservation.regUser", reservationDTO);
 		return usrNo;
 	}
 	
-	public int book(List<ReservationDTO> reservationDTOList) {
-		return sqlSession.insert("reservation.book", reservationDTOList);
+	public String book(List<ReservationDTO> reservationDTOList) {
+		List<String> rsvDt = sqlSession.selectList("reservation.book", reservationDTOList);
+		return rsvDt.get(0);
 	}
 }

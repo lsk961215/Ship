@@ -60,12 +60,12 @@
 			AND 
 				usr_nm LIKE '%' || #{usrNm} || '%'
 			</if>
-			<if test="replyState != null">
+			<if test="reStSel != null">
 			AND 
-				<if test="replyState == '01'">
+				<if test="reStSel == '01'">
 				bo_re_cont is null
 				</if>
-				<if test="replyState == '02'">
+				<if test="reStSel == '02'">
 				bo_re_cont is not null
 				</if>
 			</if>

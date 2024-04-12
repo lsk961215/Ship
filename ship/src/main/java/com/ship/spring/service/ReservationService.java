@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ship.spring.dao.ReservationDAO;
 import com.ship.spring.dto.BoardDTO;
@@ -22,14 +24,18 @@ public class ReservationService {
 		return reservationDAO.getReservationList(reservationDTO);
 	}
 	
-	public int book(List<ReservationDTO> reservationDTOList) {
+	@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
+	public ReservationDTO book(List<ReservationDTO> reservationDTOList) {
 		for(int i = 0; i<reservationDTOList.size(); i++) {
 			String usrNo = Integer.toString(reservationDAO.regUser(reservationDTOList.get(i)));
 			reservationDTOList.get(i).setUsr_no(usrNo);
 		}
 		
-		reservationDAO.book(reservationDTOList);
+		String rsvDt = reservationDAO.book(reservationDTOList);
 		
-		return 0;
+		reservationDTOList.get(0).setRsvDt(rsvDt);
+		reservationDTOList.get(0).setCustCnt(Integer.toString(reservationDTOList.size()));
+		
+		return reservationDTOList.get(0);
 	}
 }
